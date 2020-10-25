@@ -1,0 +1,189 @@
+Easy Setup Guide for Windows systems (step-by-step)
+
+This guide is intended as a step-by-step procedure for setting up a complete web 
+server including SQL and PHP support on a Windows NT based system.  You may be 
+able to get it to work on Windows 98, but it is not recommended.  I make no 
+guarantees in following this document and probably cannot help you if you should 
+have any trouble.  There is no guarantee that this will work for you on your 
+particular setup and all is done at your own risk.  If you're running a server 
+you should have some basic knowledge of Windows systems and Internet security.
+
+===============================================================================
+===== STEP 1: Apache Web Server ===============================================
+===============================================================================
+
+If you don't currently have a web server installed I recommend installing
+Apache 2.0.  It's fast and stable.
+
+Download and install Apache web server: http://httpd.apache.org/download.cgi
+
+The latest  release as of this writing can be found here:
+http://apache.webmeta.com/dist/httpd/binaries/win32/apache_2.0.43-win32-x86-no_ssl.msi
+
+Install by double-clicking the .msi file from Windows Explorer.  This requires 
+the Microsoft MSI installer which is included in Windows 2000 and XP which you 
+really should be running.  If you're running an older version of Windows and 
+don't have it installed you can get it from:
+http://www.microsoft.com/msdownload/platformsdk/instmsi.htm
+
+Follow the prompts for installation.  If you don't have a domain name and will 
+just be using IP addresses then it doesn't really matter what you enter and can 
+just put "domain.com" or something for your network domain and server name.  You 
+should run under the default port 80 unless there's a reason you need to use a 
+different port.  Select "Typical" for the installation type - this will include 
+the Apache documentation but not the module libraries, used for compiling 
+additional libraries.  The server should start automatically.  Test your 
+installation by going to the URL: http://localhost A screen should come up with 
+the "Powered By Apache" logo at the bottom.  The server can be stopped or 
+restarted from the Apache service tool in your taskbar by the clock.  Stop the 
+web server for now by left-clicking the taskbar icon, selecting the "Apache2" 
+server, then click "Stop".  Starting and stopping the Apache web server can also
+be done from the icons added in the start menu.
+
+Edit the Apache configuration file by going to the Apache server folder in your 
+start menu, selecting "Configure Apache Server" and then "Edit the Apache httpd.conf Configuration File".
+Scroll down to the section with all the "LoadModule" lines.  After the last one 
+("#LoadModule ssl_module modules/mod_ssl.so") add the following lines:
+
+LoadModule php4_module c:/php/sapi/php4apache2.dll
+AddType application/x-httpd-php .php
+
+Find the following line:
+DirectoryIndex index.html index.html.var
+  change to:
+DirectoryIndex index.html index.html.var index.php
+
+Save the file and exit.
+
+===============================================================================
+===== STEP 2: MySQL ===========================================================
+===============================================================================
+
+Download and install MySQL: http://www.mysql.com/downloads/index.html
+
+The latest release as of this writing can be found here:
+http://www.mysql.com/Downloads/MySQL-3.23/mysql-3.23.54-win.zip
+
+Unzip the archive to a temporary directory and run setup.  Follow the setup 
+prompts and select "Typical" for installation type.  Once the installation is 
+complete, copy the file "c:\mysql\my-medium.cnf" to "c:\my.cnf".  Install the 
+MySQL server service by running (on WinNT/2K/XP):
+c:\mysql\bin\mysqld-nt.exe -install
+
+Start the service by running:
+net start MySql
+
+Run the MySQL client:
+c:\mysql\bin\mysql.exe
+
+Change your root user password (replace 'statspass' with a secure password):
+mysql> SET PASSWORD FOR root=PASSWORD('newpassword');
+
+The semi-colon is necessary to end a chain of MySQL commands.
+
+Create the database:
+mysql> CREATE DATABASE utstatsdb;
+
+Create the user (replace 'statspass' with a secure password):
+mysql> GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX
+    -> ON utstatsdb.*
+    -> TO utstats@localhost
+    -> IDENTIFIED BY 'statspass';
+
+Exit the MySQL client:
+mysql> QUIT
+
+===============================================================================
+===== STEP 3: PHP =============================================================
+===============================================================================
+
+Download and install PHP: http://www.php.net
+
+The latest version as of this writing is here:
+http://www.php.net/get_download.php?df=php-4.3.0-Win32.zip
+
+Extract the files to the root of your C: drive (a subdirectory is automatically 
+created).  Rename the directory "php-4.3.0-Win32" to "php".  Copy the files 
+from "c:\php\dlls\" to your Windows system directory:
+
+c:\WINNT\System32 (Win2K/NT)
+c:\Windows\System32 (WinXP)
+c:\Windows\System (Win9x)
+
+Copy php4ts.dll and php4ts.lib from "c:\php\" to your Windows system directory 
+as above.
+
+Copy c:\php\php.ini-recommended to your windows directory (c:\Windows or 
+c:\WINNT) and rename to php.ini.  Edit php.ini and modify the following 
+variables:
+
+max_execution_time = 30
+ change to:
+max_execution_time = 60
+
+error_reporting = E_ALL
+  change to:
+error_reporting = E_ALL & ~E_NOTICE
+
+register_argc_argv = Off
+  change to:
+register_argc_argv = On
+
+magic_quotes_gpc = Off
+  change to:
+magic_quotes_gpc = On
+
+extension_dir = ./
+  change to:
+extension_dir = c:\php\extensions\
+
+;extension=php_gd.dll
+  change to:
+extension=php_gd.dll
+
+===============================================================================
+===== STEP 4: UT2003 StatsDB ==================================================
+===============================================================================
+
+Start the Apache web browser.
+
+Extract the latest UT2003 StatsDB program to your web server's document directory.
+The default for Apache 2.0 would be "c:\Program Files\Apache Group\Apache2\htdocs".
+You should now have a directory such as "c:\Program Files\Apache Group\Apache2\htdocs\utstatsdb-1.03".
+Rename "utstatsdb-1.03" to "utstats".
+Edit the file "statsdb.inc.php" in your utstats directory.
+Change the $Adminpass variable from "adminpass" to something more secure.
+Change the $SQLpw variable from "statspass" to whatever you set for the new
+user you created in MySQL (not the MySQL root password).
+
+You can optionally configure the variables in config.inc.php to your liking.
+See the file or the README.txt file for more info.
+
+Open a web brower and enter the following URL:
+http://localhost/utstats/createtables.php?pass=adminpass
+
+Replace "adminpass" with the password you setup in config.inc.php.  If all went 
+well there won't be any errors.
+
+To parse your log files into the database (the log files must be in your 
+"utstats\Logs" directory or whatever you've changed this value to in 
+config.inc.php) go to the following URL:
+
+http://localhost/utstats/logs.php?pass=adminpass
+
+You should now be able to access the stats via: http://localhost/utstats/
+
+===============================================================================
+===== Additional Notes ========================================================
+===============================================================================
+
+There are many configuration options available which I will not cover in this 
+document.  This is just to help you get a web server up and running with MySQL 
+and PHP in order to use UT2003 StatsDB.  You can easily change configuration 
+options such as the root documents directory for your web pages or the log 
+directory for your UT logs.  I've also not specifically covered security, but 
+following these steps will give you a fairly secure web server.  However, you 
+should still run some sort of firewall.  Speaking of firewalls, the only port 
+you will need to have open or directed to your system is port 80 for the web 
+server.  I hope this document helped some people since it was a tedious pain in 
+the butt to write.

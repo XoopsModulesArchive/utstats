@@ -1,0 +1,195 @@
+Release Notes (published releases):
+
+Version 1.12
+  Various minor bug fixes and table optimizations.
+
+Version 1.11
+  Modified log parser to handle version 2225 logs (backwards compatible with older logs).
+  Added ability to download logs directly from ftp server (including ftps).
+
+Version 1.1
+  *Table update required (run updatetables.php?pass=<adminpass>).
+  Modified layout in game stats page for team games.
+  Added SPH (Score Per Hour) to player list page.
+  Included scores in player score totals for deathmatch games.
+  Added additional color/font schemes, selectable from config file.
+  Color codes used for dark color scheme thanks to dark_wizard.
+  Declared additional variables to avoid notices in logparse.
+  Added separate deathmatch score in player table.
+  Added 104 table update.
+  Corrected score increment problem introduced in v1.03.
+  Fixed problems with graphs corrupting.
+  Uses map filename if untitled map.
+  Updated and combined updatetables (removed individual versions).
+  Added additional game types to tables.
+  Various modifications to graphs and gamestats for new game types.
+  Added function to discard logs with less than two players.
+  Adjusted display of team scores in gamestats.
+  Enabled chat log link when 0 chat messages.
+  Removed blank line after PHP closing tag in include files.
+  Fixed critical error when map names contain special characters.
+  Added logging by player's stats name and password hash (see STATSNAME.txt).
+  Added support for Last Man Standing.
+  Added individual player stats information for new game types.
+  Fixed problem with single player games not being saved even when set to do so.
+  Corrected problem with long server names allowing duplicate log parsing.
+  Score logs now removed when games are purged.
+  Corrected various issues with special characters in totals.
+  Changed graph display for score and/or frags based on game type.
+  Player's most recent games played now sorted by date instead of game number.
+  Added script time counter reset to log parsing.
+  Added killing spree list for all players to gamestats.
+  Set killing spree lists to sort by time.
+
+Version 1.03
+  Weapon specific info no longer displays anything with suicides only (displayed in Suicide table).
+  Removed excess gap in main page.
+  Individual game player screen no longer shows blank info if invalid player number.
+  Fixed bug in game player not showing all opponents in player specific kills and deaths.
+  Fixed divide by zero error when teamgame ends with no players on one team.
+  Renamed utstatsdb.inc.php to statsdb.inc.php.
+  Corrected misnamed variable flagreturndata in game highs.
+  Fixed minor variable declaration problems in log parsing routines.
+  Moved color settings from server query display to the stylesheet (style.css).
+  Fixed mutators not showing up in server query display.
+  Added "Wicked Sick" (30+) killing sprees (*table update required*).
+  Fixed killing spree/multi-kill calculation problem when player is team killed.
+  Added table conversion utility.
+  Added tag for team chat in LocalStats 1.03.
+  Inserted missing "Mega Kills", added to 103 table update.
+  Added frag graphs to team games.
+  Added sort options in player list.
+  Modified individual game stats to display current player name.
+  Added player numbers to player listing.
+
+Version 1.02
+  Include negative score grids in game graphs.
+  Corrected bug in player weapon specific information not displaying correct secondary totals.
+  Cleaned up variables - no more notices are generated.
+  Corrected problems with command line log parsing on some system configurations.
+  Improved grammar in the killing spree list in individual player game stats.
+  Fixed inability to change pages in multi-page player list on some systems.
+  Added server status to main page.
+  Added support for status of multiple servers.
+  Server status support for servers with and without ServQuery 1.07.
+  Fixed bug in player time calculation for relogged players.
+  Corrected bug in sort routine for log parsing by date.
+  Fixed bug in weapon specific stats not showing when only secondary kills exist.
+
+Version 1.01
+  Limited graph to 8 lines max.
+  Improved grammar in the chat log.
+  Added some modified weapons and additional suicides to weapons.sql file.
+  Fixed non-weapon suicides not showing in totals.
+  Removed event suicides from weapon specific totals in totals.php and playerstats.php.
+  Added file exist check to createtables.php.
+  Added check for trailing slash in logpath variable.
+  Fixed item pickup count when parsing multiple log files.
+  Stripped out any lurking line feeds from all source files.
+
+Version 1.00
+  Finished game chat log.
+  Added "Most Recent Games Played" to individual player stats.
+  Added "SniperRifle" to default weapons list as "Lightning Gun".
+  Added combo special event tags for new LocalLogs.
+  Modified chat log messages for suicides and event deaths.
+  Fixed potential problem with special chars in player name.
+  Corrected rank numbers in multi-page main player list.
+  Old chat logs now removed when game logs are deleted.
+  Added team score events to chat log.
+  Fixed slashes in player, server, admin, and email names containing special characters.
+  Fixed incorrect game highs with players that have relogged.
+  Added chat log color key.
+  Changed admin logins in chat log to system message color.
+
+Version 0.99b1
+  Added game start/end to event logs.
+  Added connection log to game stats and game individual player stats.
+  Added 'nohtml' switch to logs and createtables.
+  Fixed player with firstblood shows "No" in individual player stats.
+  Fixed command line createtables.php not working.
+  Fixed game graph incorrect when negative frags reached.
+  Fixed Career Summary in playerstats shows incorrect total for losses.
+  When calculating career highs - clear fph total before finding current high.
+  Allow variable width table for Game Stats list (index).
+  Names clickable in Flag Event Summary in gamestats.
+  Items collected information incorrect in both individual player game stats and totals.
+  Sort order of items collected by quantity and description.
+  Disable weapon "None" from displaying in all sections.
+  Fixed suicide weapons listed separately for primary/secondary in game stats players.
+  Fixed player career suicides show only weapon suicides, not environmental suicides.
+  Fixed no primary/secondary fire in weapon specifics for player careers.
+  Fixed no "ZoomSuperShockRifle" in default weapons list.
+  Fixed "None" weapon in Weapon Specific Totals in totals.
+  Fixed "None" weapon in Most Career Deaths While Holding a Weapon in career and game highs.
+  Fixed "None" weapon in Weapon Specific Information in game stats.
+  Fixed rename "Trans Gib" in player totals to "Failed Translocations".
+  Fixed add totals line in Summary information for totals.
+  Changed "Game End" to "Game Ended" in game stats and game player Connection Log.
+  Remove "a" from Reason Spree Stopped (with a weapon).
+  Fixed game stats connection log shows bots in human colors.
+  Fixed names not clickable in gamestats Connection Log.
+  Changed "CTF and Domination Events Summary" - includes bombing run data (totals and players).
+  Fixed CTF flag event totals incorrect in game stats.
+  Fixed player hours for the Totals Logged and Total Games played by type are inconsistent with each other.
+  Fixed changed database game player types to signed smallint due to -1 player kills (event kills).
+  Fixed group teams in kills match up for team games (game stats).
+  Fixed team game and flag event summaries in game stats should rank by score.
+  Fixed player hours not matching up in various totals.  Game Highs/Career Highs based on humans only.
+  Fixed event suicides not showing as a suicide.
+  Fixed some weapons show up in multiple rows of weapon specific tables in gamestats and player stats.
+  Log team changes by players in the connection log.
+  Fixed "Unknown Weapon" suicides in player career weapon specific totals from team switch death.
+  Fixed error in playerstats when no pickups logged.
+  In flag summary and game summary in game stats, list players on any teams scored for.
+  Added asterisk before name to players in flag summary who ended game on opposing team.
+  No longer imports an existing log based on Server, Map, Type, Date.
+  Added logs.php now keeps most recent two incomplete log files per server name.
+  Added chat log to database (not yet in viewer).
+  Fixed inaccurate/incomplete CTF information in game stats and totals.
+
+Version 0.99b
+  Allow setting of maximum game logs to keep in database.
+  Display players by page.
+  Display games by page.
+  Corrected bug with suicides for player 0.
+  Added individual game player stats - selected from player lists in game stats.
+  Added relog tracking for players who reconnect with same name after disconnect.
+  Added special events section to game stats.
+  Added events to log parsing/database.
+  Primary and secondary function kills in game stats.
+
+Version 0.97b
+  Optimized parser and viewer routines.
+  Item pickups added.
+  Game highs weapon info now shows correct player.
+  Weapon specific information combined for different weapon modes.
+  Totals show weapon specific primary and secondary function kills.
+  Individual player links for career and game highs.
+  Bots excluded from all high scores.
+  Added "Multi" switch to log parser.
+  Added command line capability to log parser.
+  Corrected error in items.sql file.
+  Case insensitive log parsing.
+  Other bug fixes.
+
+Version 0.95b
+  Partial and incomplete log problems fixed.
+  More complete totals page.
+  Weapon stat info corrected.
+  Corrected various FPH calculations.
+  Rankings now accurate and player data matches correct players.
+  Killing spree kills and time tracking.
+  Multi-kill tracking for older LocalLog and MutLocalLog.
+  Logs that skip player numbers now handled correctly.
+  Fix for no server info with blank admin or email names.
+  Restructured file naming format.
+  Potential security issue fix in log parsing/saving.
+  Additional parameters added to log parser.
+  Many other bug fixes.
+
+Version 0.91b
+  Fixed problems parsing LocalLog and MutLogLog log files.
+
+Version 0.90b
+  Initial beta release.

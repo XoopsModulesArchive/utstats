@@ -1,0 +1,19 @@
+Notes on stat name tracking in version 1.04 on:
+
+If you wish to enable stat tracking by the stat name and password set in the 
+player's global stats settings (under Network in the game menu), set 
+"$usestatsname" to 1 in the config file (config.inc.php).  The one drawback to 
+this is that the system will generate new entries for players with stats name 
+and passwords set if their existing entry in the database does not have this 
+info.  For small servers you can manually enter the information by looking up 
+the entries in the log files before parsing them, but this would be very tedious 
+for anything more, in which case you might just might consider starting fresh on 
+your stats by dropping the database tables and recreating them.
+
+The advantage in using the global stats name and password is that this won't 
+cause a problem when someone else logs in with the same name as an existing 
+player.  Also, a player can change their name and the stats database will 
+reflect whatever name they last used in a game.
+
+Currently there is no way to distinguish multiple players with the same name in 
+the stats database, but this will be fixed in the next release.
